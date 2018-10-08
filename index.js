@@ -59,12 +59,11 @@ let incorrectCount = 0;
 function generateQuestion() {
   if (questionNum < STORE.length) {
     return `
-    <div class="main-body">
       <h2>${STORE[questionNum].question}</h2>
       <form class="question-form">
         <fieldset>
           <label for="answerChoice-1">${STORE[questionNum].answers[0]}</label>
-          <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[0]}" id="answerChoice-1">
+          <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[0]}" id="answerChoice-1" required>
           <label for="answerChoice-2">${STORE[questionNum].answers[1]}</label>
           <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[1]}" id="answerChoice-2">
           <label for="answerChoice-3">${STORE[questionNum].answers[2]}</label>
@@ -74,16 +73,15 @@ function generateQuestion() {
           <button type="submit" class="submit-btn">Submit</button>
         </fieldset>
       </form>
-    </div>
     `;
   } else {
-
+    renderFinalScore();
   }
 }
 
 // Decides what feedback to give the user based on if answer is correct or incorrect
 function selectedAnswer() {
-  $('form').on('submit', function(event) {
+  $('.main-body').on('submit', 'form', function(event) {
     event.preventDefault();
     let userAnswer = $('input:checked').val();
     let correctAnswer = `${STORE[questionNum].correctAnswer}`;
@@ -155,7 +153,36 @@ function generateScoreCounter() {
 
 // Responsible for generating final user score
 function generateFinalScore() {
+  if (correctCount > 7) {
+    return `
+    <h3>You got ${correctCount} out of 10 questions correct. You're a dog expert.</h3>
+    <button type="button" class="restartQuiz-btn">Restart quiz</button>
+    `;
+  } else if (correctCount > 4) {
+    return `
+    <h3>You got ${correctCount} out of 10 questions correct. I guess you know your dogs...</h3>
+    <button type="button" class="restartQuiz-btn">Restart quiz</button>
+    `;
+  } else {
+    return `
+    <h3>You got ${correctCount} out of 10 questions correct. Your dog knowledge could use some help.</h3>
+    <button type="button" class="restartQuiz-btn">Restart quiz</button>
+    `;
+  }
+}
 
+// Responsible for rendering final user score
+function renderFinalScore() {
+  $('.score-tracker').remove();
+  $('.main-body').html(generateFinalScore());
+}
+
+// Renders the next question when 'next question' button is clicked
+function renderNextQuestion() {
+  $('.main-body').on('click', '.nextQuestion-btn', function(event) {
+    questionNum++;
+    $('.main-body').html(generateQuestion());
+  });
 }
 
 // Responsible for starting the quiz
@@ -163,18 +190,23 @@ function startQuiz() {
   $('.intro-text').on('click', '.start-quiz', function(event) {
     $('.intro-text').remove();
     $('.main-title').after(generateScoreCounter());
-    $('main').append(generateQuestion());
+    $('.main-body').css('display', 'block');
+    $('.main-body').append(generateQuestion());
   });
 };
 
 // Responsible for restarting the quiz
 function restartQuiz() {
-
+  $('.main-body').on('click', '.restartQuiz-btn', function(event) {
+    location.reload();
+  });
 }
 
 function handleQuiz() {
   startQuiz();
   selectedAnswer();
+  renderNextQuestion();
+  restartQuiz();
 }
 
 $(handleQuiz);
