@@ -59,18 +59,18 @@ let incorrectCount = 0;
 function generateQuestion() {
   if (questionNum < STORE.length) {
     return `
-      <h2>${STORE[questionNum].question}</h2>
+      <h2>Q${questionNum+1}: ${STORE[questionNum].question}</h2>
       <form class="question-form">
         <fieldset>
-          <label for="answerChoice-1">${STORE[questionNum].answers[0]}</label>
+          <label for="answerChoice-1" class="form-part">${STORE[questionNum].answers[0]}</label>
           <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[0]}" id="answerChoice-1" required>
-          <label for="answerChoice-2">${STORE[questionNum].answers[1]}</label>
+          <label for="answerChoice-2" class="form-part">${STORE[questionNum].answers[1]}</label>
           <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[1]}" id="answerChoice-2">
-          <label for="answerChoice-3">${STORE[questionNum].answers[2]}</label>
+          <label for="answerChoice-3" class="form-part">${STORE[questionNum].answers[2]}</label>
           <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[2]}" id="answerChoice-3">
-          <label for="answerChoice-4">${STORE[questionNum].answers[3]}</label>
+          <label for="answerChoice-4" class="form-part">${STORE[questionNum].answers[3]}</label>
           <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[3]}" id="answerChoice-4">
-          <button type="submit" class="submit-btn">Submit</button>
+          <button type="submit" class="submit-btn form-part">Submit</button>
         </fieldset>
       </form>
     `;
@@ -112,6 +112,7 @@ function generateCorrectAnswerFeedback() {
   return `
   <div class="correctResponseFeedback">
     <p>Good job! You got the right answer.</p>
+    <img src="./resources/img/q${questionNum+1}-img.jpg" class="feedbackImg" alt="Image for question ${questionNum+1}">
   </div>
   <button type="button" class="nextQuestion-btn">Next Question</button>
   `;
@@ -130,6 +131,7 @@ function generateIncorrectAnswerFeedback() {
   <div class="incorrectResponseFeedback">
     <p>You got the wrong answer.</p>
     <p>The correct answer is: ${correctAnswer}</p>
+    <img src="./resources/img/q${questionNum+1}-img.jpg" class="feedbackImg" alt="Image for question ${questionNum+1}">
   </div>
   <button type="button" class="nextQuestion-btn">Next Question</button>
   `;
@@ -155,17 +157,20 @@ function generateScoreCounter() {
 function generateFinalScore() {
   if (correctCount > 7) {
     return `
-    <h3>You got ${correctCount} out of 10 questions correct. You're a dog expert.</h3>
+    <p>You got ${correctCount} out of 10 questions correct.</p>
+    <p>You're a dog expert.</p>
     <button type="button" class="restartQuiz-btn">Restart quiz</button>
     `;
   } else if (correctCount > 4) {
     return `
-    <h3>You got ${correctCount} out of 10 questions correct. I guess you know your dogs...</h3>
+    <p>You got ${correctCount} out of 10 questions correct.</p>
+    <p>I guess you know your dogs...</p>
     <button type="button" class="restartQuiz-btn">Restart quiz</button>
     `;
   } else {
     return `
-    <h3>You got ${correctCount} out of 10 questions correct. Your dog knowledge could use some help.</h3>
+    <p>You got ${correctCount} out of 10 questions correct.</p>
+    <p>Your dog knowledge could use some help.</p>
     <button type="button" class="restartQuiz-btn">Restart quiz</button>
     `;
   }
