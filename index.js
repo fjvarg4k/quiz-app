@@ -130,7 +130,7 @@ function generateIncorrectAnswerFeedback() {
   return `
   <div class="incorrectResponseFeedback">
     <p>You got the wrong answer.</p>
-    <p>The correct answer is: ${correctAnswer}</p>
+    <p>The correct answer is: <span class="correctAnswer-highlight">${correctAnswer}</span></p>
     <img src="./resources/img/q${questionNum+1}-img.jpg" class="feedbackImg" alt="Image for question ${questionNum+1}">
   </div>
   <button type="button" class="nextQuestion-btn">Next Question</button>

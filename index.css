@@ -1,7 +1,16 @@
+body,
+html {
+  height: 100%;
+}
+
 body {
   box-sizing: border-box;
   font-family: 'Roboto', sans-serif;
   background-color: #93E1FF;
+  /* background-image: url("./resources/img/cover-img.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; */
 }
 
 button,
@@ -27,8 +36,20 @@ main {
 .main-body {
   display: none;
   text-align: center;
+  /* background-color: rgba(255, 217, 176, 0.3); */
+  background-color: rgba(30, 138, 178, 0.3);
+  border-radius: 2px;
+  width: 100%;
+  /* padding-left: 10px;
+  padding-right: 10px; */
   /* margin-left: auto;
   margin-right: auto; */
+}
+
+.main-body h2 {
+  margin: 0;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .score-tracker {
@@ -79,7 +100,7 @@ main {
 }
 
 form {
-  width: 500px;
+  max-width: 500px;
   margin: 0 auto;
   display: block;
 }
@@ -96,10 +117,15 @@ fieldset {
   /* padding-right: 10px; */
 }
 
-label {
+label,
+fieldset input {
   float: left;
-  padding-right: 15px;
-  padding-bottom: 30px;
+  margin-bottom: 30px;
+  margin-top: 10px;
+}
+
+label {
+  margin-right: 15px;
   width: 100px;
   text-align: left;
   font-size: 18px;
@@ -107,10 +133,8 @@ label {
 
 fieldset input {
   /* display: inline; */
-  float: left;
   /* text-align: left; */
   /* clear: both; */
-  padding-bottom: 30px;
   width: 16px;
   height: 16px;
 }
@@ -122,15 +146,59 @@ fieldset input {
   margin-top: 15px;
 }
 
+/* .correctResponseFeedback p,
+.incorrectResponseFeedback p {
+  padding-top: 10px;
+} */
+
 p {
   font-size: 18px;
+  padding-top: 10px;
 }
 
 .feedbackImg {
-  width: 450px;
-  height: 350px;
+  max-width: 450px;
+  width: 100%;
+  height: auto;
   /* margin-left: auto;
   margin-right: auto; */
-  margin-bottom: 15px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+  display: inline-block;
+  margin: 0 auto;
+}
+
+.correctAnswer-highlight {
+  font-weight: 700;
+}
+
+.nextQuestion-btn,
+.restartQuiz-btn {
   margin-top: 15px;
+  margin-bottom: 10px;
+}
+
+/* @media screen and (max-width: 860px) {
+  body {
+    background-image: url("./resources/img/cover-img-small.jpg") fixed;
+  }
+} */
+
+@media screen and (max-width: 1000px) {
+  .main-body {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
+
+@media screen and (max-width:600px) {
+  .main-body h2 {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .main-body h2 {
+    font-size: 16px;
+  }
 }
