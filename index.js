@@ -57,26 +57,25 @@ let incorrectCount = 0;
 
 // Responsible for generating the next question
 function generateQuestion() {
-  if (questionNum < STORE.length) {
-    return `
-      <h2>Q${questionNum+1}: ${STORE[questionNum].question}</h2>
-      <form class="question-form">
-        <fieldset>
-          <label for="answerChoice-1" class="form-part">${STORE[questionNum].answers[0]}</label>
-          <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[0]}" id="answerChoice-1" required>
-          <label for="answerChoice-2" class="form-part">${STORE[questionNum].answers[1]}</label>
-          <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[1]}" id="answerChoice-2">
-          <label for="answerChoice-3" class="form-part">${STORE[questionNum].answers[2]}</label>
-          <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[2]}" id="answerChoice-3">
-          <label for="answerChoice-4" class="form-part">${STORE[questionNum].answers[3]}</label>
-          <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[3]}" id="answerChoice-4">
-          <button type="submit" class="submit-btn form-part">Submit</button>
-        </fieldset>
-      </form>
-    `;
-  } else {
-    renderFinalScore();
+  return `
+    <form class="question-form">
+      <fieldset>
+        <legend>Q${questionNum+1}: ${STORE[questionNum].question}</legend>
+        ${loopThroughChoices()}
+        <button type="submit" class="submit-btn form-part">Submit</button>
+      </fieldset>
+    </form>
+  `;
+}
+
+// Loops through the possible answers for each question
+function loopThroughChoices() {
+  let choicesArray = [];
+  for (var i = 0; i < 4; i++) {
+    choicesArray.push(`<label for="answerChoice-${i+1}" class="form-part">${STORE[questionNum].answers[i]}</label>
+     <input type="radio" name="possibleAnswer" value="${STORE[questionNum].answers[i]}" id="answerChoice-${i+1}" required>`);
   }
+  return choicesArray.join('');
 }
 
 // Decides what feedback to give the user based on if answer is correct or incorrect
@@ -114,7 +113,7 @@ function generateCorrectAnswerFeedback() {
     <p>Good job! You got the right answer.</p>
     <img src="./resources/img/q${questionNum+1}-img.jpg" class="feedbackImg" alt="Image for question ${questionNum+1}">
   </div>
-  <button type="button" class="nextQuestion-btn">Next Question</button>
+  <button type="button" ${questionNum === 9 ? 'class="finalScore-btn">View Final Score' : 'class="nextQuestion-btn">Next Question'}</button>
   `;
 }
 
@@ -133,7 +132,7 @@ function generateIncorrectAnswerFeedback() {
     <p>The correct answer is: <span class="correctAnswer-highlight">${correctAnswer}</span></p>
     <img src="./resources/img/q${questionNum+1}-img.jpg" class="feedbackImg" alt="Image for question ${questionNum+1}">
   </div>
-  <button type="button" class="nextQuestion-btn">Next Question</button>
+  <button type="button" ${questionNum === 9 ? 'class="finalScore-btn">View Final Score' : 'class="nextQuestion-btn">Next Question'}</button>
   `;
 }
 
@@ -178,8 +177,12 @@ function generateFinalScore() {
 
 // Responsible for rendering final user score
 function renderFinalScore() {
-  $('.score-tracker').remove();
-  $('.main-body').html(generateFinalScore());
+  $('.main-body').on('click', '.finalScore-btn', function(event) {
+    $('.score-tracker').remove();
+    $('.main-body').html(generateFinalScore());
+  });
+  // $('.score-tracker').remove();
+  // $('.main-body').html(generateFinalScore());
 }
 
 // Renders the next question when 'next question' button is clicked
@@ -203,14 +206,20 @@ function startQuiz() {
 // Responsible for restarting the quiz
 function restartQuiz() {
   $('.main-body').on('click', '.restartQuiz-btn', function(event) {
-    location.reload();
+    questionNum = 0;
+    correctCount = 0;
+    incorrectCount = 0;
+    $('.main-title').after(generateScoreCounter());
+    $('.main-body').html(generateQuestion());
+    // location.reload();
   });
 }
 
 function handleQuiz() {
   startQuiz();
   selectedAnswer();
-  renderNextQuestion();
+  renderNextQuestion()
+  renderFinalScore();
   restartQuiz();
 }
 
